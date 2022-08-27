@@ -1,6 +1,6 @@
 const express = require ('express');
 const Blog = require('./models/blog')
-
+const blogRoutes = require('./routes/blogRoutes')
 const app = express();
 const mongoose = require('mongoose');
 const dbURI = "mongodb+srv://abhi:abhi963@cluster0.ducobhe.mongodb.net/nodeTut?retryWrites=true&w=majority"
@@ -39,6 +39,8 @@ app.get('/',(req,res)=>{
 
 });
 
+//Blog route
+app.use(blogRoutes);
 
 //post request //
 app.post('/create',(req,res)=>{
@@ -53,39 +55,15 @@ app.post('/create',(req,res)=>{
    res.redirect('/');
 })
 
-app.get('/blogs/:id',(req,res)=>{
-    const id = req.params.id;
-    
 
-    Blog.findById(id)
-    .then((result)=>{
-        res.render('details',{blog:result,title:'Blog Details'});
-    })
-    .catch((err)=>{
-        console.log(err);
-    })
-
-})
 
 app.get('/about',(req,res)=>{
 res.render('about',{title:'about'});
 });
 
-app.get('/blogs/create',(req,res)=>{
-    res.render('create',{title:"Create Blog"});
-})
 
 
-app.delete(('/blogs/:id'),(req,res)=>{
-    const id = req.params.id;
-    Blog.findByIdAndDelete(id)
-    .then((result)=>{
-        res.json({redirect:'/blogs'});
-    })
-    .catch((err)=>{
-        console.log(err);
-    })
-})
+
 
 
  //use()is a middleware 
